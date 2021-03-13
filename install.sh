@@ -31,7 +31,7 @@ echo "[✔] Checking directories..."
 git clone --depth=1 https://github.com/Ermak4ok/fsociety "$INSTALL_DIR";
 echo "#!$BASH_PATH python $INSTALL_DIR/fsociety.py" "${1+"$@"}" > "$INSTALL_DIR/fsociety";
 chmod +x "$INSTALL_DIR/fsociety";
-cp "$INSTALL_DIR/fsociety.sh" "$BIN_DIR"
+cp "$INSTALL_DIR/fsociety.py" "$BIN_DIR"
 cp "$INSTALL_DIR/fsociety.cfg" "$BIN_DIR"
 rm "$INSTALL_DIR/fsociety";
 	echo "";
