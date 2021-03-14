@@ -56,6 +56,7 @@ red   = '\033[91m'
 blue  = '\033[34m'
 green = '\033[92m'
 fsocietyPrompt = red + "fsociety ~# " + blue 
+continuePrompt = "\nClick [Return] to continue"
 fsocietyLogo = blue + '''
         d88888b .d8888.  .d88b.   .o88b. d888888b d88888b d888888b db    db
         88'     88'  YP .8P  Y8. d8P  Y8   `88'   88         88    `8b  d8'
@@ -141,8 +142,38 @@ class whois:
     '''
 
     def __init__(self):
+        if not self.installed():
+            self.install()
+        os.system('clear')
         print(self.whoisLogo)
-        print(proxy)
+        address = raw_input("Enter Target IP/Subnet/Range/Host: ")
+        self.menu(address)
+    def installed(self):
+        return (os.path.isfile("/usr/bin/whois") or os.path.isfile("/usr/local/bin/whois"))
+
+    def install(self):
+        os.system('apt-get install whois')
+
+    def menu(self, address):
+        os.system('clear')
+        print(self.whoisLogo)
+        print("   Whois scan for: %s\n" % address)
+        print("   {1}--Full Scan \n")
+        print("   {99}--Return to information gathering menu \n")
+        response = raw_input("whois ~# ")
+        os.system('clear')
+        try:
+            if response == "1":
+                os.system("whois %s" % (address))
+                response = raw_input(continuePrompt)
+            elif response == "99":
+                fsociety()
+                pass
+            else:
+                self.menu(address)
+        except KeyboardInterrupt:
+            self.menu(address)
+
 
 
 
