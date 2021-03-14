@@ -124,7 +124,9 @@ class informationGatheringMenu:
         if choiceinfo == "1":
             whois()
         elif choiceinfo == "2":
-            hosttoip() 
+            hosttoip()
+        elif choiceinfo == "3":
+            nmap() 
         elif choiceinfo == "99":
             fsociety()
         else:
@@ -173,7 +175,68 @@ class whois:
                 self.menu(address)
         except KeyboardInterrupt:
             self.menu(address)
+# nmap
+class nmap:
+    nmapLogo = '''
+    88b 88 8b    d8    db    88""Yb
+    88Yb88 88b  d88   dPYb   88__dP
+    88 Y88 88YbdP88  dP__Yb  88"""
+    88  Y8 88 YY 88 dP""""Yb 88
+    '''
 
+    def __init__(self):
+        if not self.installed():
+            self.install()
+        os.system('clear')
+        print(self.nmapLogo)
+        address = raw_input("Enter Target IP/Subnet/Range/Host: ")
+        self.menu(address)
+    def installed(self):
+        return (os.path.isfile("/usr/bin/nmap") or os.path.isfile("/usr/local/bin/nmap"))
+
+    def install(self):
+        os.system('apt-get install nmap')
+
+    def menu(self, address):
+        os.system('clear')
+        print(self.nmapLogo)
+        print("   Whois scan for: %s\n" % address)
+        print("   {1}--Simple Scan [-sV]")
+        print("   {2}--Port Scan [-Pn]")
+        print("   {3}--Operating System Detection [-A]")
+        print("   {4}--Full Ports Scan [utp]")
+        print("   {5}--Full Ports Scan [udp]")
+        print("   {6}--Full Scan\n")
+        print("   {99}--Return to information gathering menu \n")
+        response = raw_input("whois ~# ")
+        os.system('clear')
+        logPath = "logs/nmap-" + strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+        try:
+            if response == "1":
+                os.system("nmap -sV -oN %s %s" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "2":
+                os.system("nmap -Pn -oN %s %s" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "3":
+                os.system("nmap -A -oN %s %s" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "4":
+                os.system("nmap -sV %s %s -p 1-65535" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "5":
+                os.system("nmap -sU %s %s -p 1-65535" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "6":
+                os.system("nmap -T4 -A -v %s %s" % (logPath, address))
+                response = raw_input(continuePrompt)
+            elif response == "99":
+                fsociety()
+                pass
+            else:
+                self.menu(address)
+        except KeyboardInterrupt:
+            self.menu(address)
 
 
 
